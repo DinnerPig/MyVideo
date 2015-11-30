@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.etc.myvideo.videoinfo.entity.Videoinfo" table="videoinfo" >
+        <id name="vidId" type="java.lang.Integer">
+            <column name="vidId" />
+            <generator class="native" />
+        </id>
+        
+        <many-to-one name="mintype" class="com.etc.myvideo.mintype.entity.Mintype" lazy="false">
+            <column name="vidMin" />
+        </many-to-one>
+        <many-to-one name="maxtype" class="com.etc.myvideo.maxtype.entity.Maxtype" lazy="false">
+            <column name="vidMax" />
+        </many-to-one>
+        <many-to-one name="area" class="com.etc.myvideo.area.entity.Area" lazy="false">
+            <column name="vidArea" />
+        </many-to-one>
+        <property name="vidName" type="java.lang.String">
+            <column name="vidName" />
+        </property>
+        <property name="vidDirector" type="java.lang.String">
+            <column name="vidDirector" />
+        </property>
+        <property name="vidStar" type="java.lang.String">
+            <column name="vidStar" />
+        </property>
+        
+         <property name="vidjianjie" type="java.lang.String">
+            <column name="vidjianjie" />
+        </property>
+        
+        
+         <property name="vidYear" type="java.lang.String">
+            <column name="vidYear" />
+        </property>
+        
+        <property name="vidInfo" type="java.lang.String">
+            <column name="vidInfo" length="1000" />
+        </property>
+        <property name="vidImage" type="java.lang.String">
+            <column name="vidImage" length="150" />
+        </property>
+        <property name="vidState" type="java.lang.String">
+            <column name="vidState" />
+        </property>
+        
+        
+        <set name="grades" order-by="graId"  lazy="false">
+            <key>
+                <column name="vidId" />
+            </key>
+            <one-to-many class="com.etc.myvideo.grade.entity.Grade" />
+        </set>
+        
+        <set name="videocounts"  order-by="couId" lazy="false" inverse="true" cascade="all-delete-orphan">
+            <key>
+                <column name="vidId" />
+            </key>
+            <one-to-many class="com.etc.myvideo.videocount.entity.Videocount" />
+        </set>
+        
+      
+        
+    </class>
+</hibernate-mapping>

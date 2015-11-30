@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 引入外部属性文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	<!-- 配置C3P0连接池: -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 注入连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 配置Hibernate的其他的属性 -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.connection.autocommit">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<!-- 配置Hibernate的映射文件 -->
+		<property name="mappingResources">
+			<list>
+				<value>com/etc/myvideo/user/entity/User.hbm.xml</value>
+				<value>com/etc/myvideo/switchimage/entity/SwitchImage.hbm.xml
+				</value>
+				<value>com/etc/myvideo/videoinfo/entity/Videoinfo.hbm.xml</value>
+				<value>com/etc/myvideo/area/entity/Area.hbm.xml</value>
+				<value>com/etc/myvideo/grade/entity/Grade.hbm.xml</value>
+				<value>com/etc/myvideo/maxtype/entity/Maxtype.hbm.xml</value>
+				<value>com/etc/myvideo/mintype/entity/Mintype.hbm.xml</value>
+				<value>com/etc/myvideo/userupload/entity/Userupload.hbm.xml</value>
+				<value>com/etc/myvideo/videocount/entity/Videocount.hbm.xml</value>
+				<value>com/etc/myvideo/comment/entity/Comment.hbm.xml</value>
+				<value>com/etc/myvideo/ad/entity/Ad.hbm.xml</value>
+				<value>com/etc/myvideo/admin/entity/Admin.hbm.xml</value>
+			</list>
+
+		</property>
+	</bean>
+
+
+
+
+
+	<!-- 事务管理: -->
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 通知 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+
+
+	<aop:config>
+		<!-- 切入点 -->
+		<aop:pointcut expression="execution(* com.etc.shop..*.*(..))"
+			id="interceptorPointCuts" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+	</aop:config>
+
+
+	<!-- Action的配置 =========================== -->
+
+	<bean id="indexAction" class="com.etc.myvideo.index.action.IndexAction"
+		scope="prototype">
+		<property name="switchImageService" ref="switchImageService" />
+		<property name="videoinfoservice" ref="videoinfoservice" />
+		<property name="videocountservice" ref="videocountservice" />
+		<property name="gradeservice" ref="gradeservice" />
+		<property name="adservice" ref="adservice" />
+	</bean>
+
+	<!-- 图片切换Action -->
+	<bean id="switchImageAction" class="com.etc.myvideo.switchimage.action.SwitchImageAction"
+		scope="prototype">
+		<property name="switchImageService" ref="switchImageService" />
+	</bean>
+
+
+	<!-- 视频Action -->
+	<bean id="videoinfoaction" class="com.etc.myvideo.videoinfo.action.Videoinfoaction"
+		scope="prototype">
+		<property name="videoinfoservice" ref="videoinfoservice" />
+		<property name="commentservice" ref="commentservice" />
+		<property name="videocountservice" ref="videocountservice" />
+
+	</bean>
+
+	<!-- 集数Action -->
+	<bean id="videocountaction" class="com.etc.myvideo.videocount.action.Videocountaction"
+		scope="prototype">
+		<property name="videocountservice" ref="videocountservice" />
+	</bean>
+
+	<!-- 聊天对话Action -->
+	<bean id="messagesaction" class="com.etc.myvideo.liaotian.action.MessagesAction">
+
+	</bean>
+
+	<!-- 弹幕Action -->
+	<bean id="danmuaction" class="com.etc.myvideo.liaotian.action.DanmuAction">
+
+	</bean>
+
+	<!--评论表action -->
+	<bean id="commentaction" class="com.etc.myvideo.comment.action.Commentaction">
+		<property name="commentservice" ref="commentservice" />
+	</bean>
+
+	<!-- 用户action -->
+	<bean id="userAction" class="com.etc.myvideo.user.action.UserAction"
+		scope="prototype">
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+
+
+	<bean id="adminAction" class="com.etc.myvideo.admin.action.AdminAction"
+		scope="prototype">
+		<property name="adminService" ref="adminService"></property>
+	</bean>
+
+	<!-- 广告 -->
+	<bean id="adaction" class="com.etc.myvideo.ad.action.Adaction">
+		<property name="adservice" ref="adservice"></property>
+	</bean>
+
+	<!-- 会员上传视频信息 -->
+	<bean id="useruploadInfoAction" class="com.etc.myvideo.userupload.action.UseruploadInfoAction"
+		scope="prototype">
+		<property name="useruploadinfoservice" ref="useruploadVideoInfoService"></property>
+	</bean>
+
+
+
+	<!-- 后台视频信息action -->
+	<bean id="adminVideoinfoAction"
+		class="com.etc.myvideo.videoinfo.adminaction.AdminVideoinfoAction"
+		scope="prototype">
+		<property name="videoinfoservice" ref="videoinfoservice"></property>
+		<property name="areaservice" ref="areaservice"></property>
+		<property name="maxtypeservice" ref="maxtypeservice"></property>
+		<property name="mintypeservice" ref="mintypeservice"></property>
+	</bean>
+
+
+	<!-- 后台视频集数信息action -->
+	<bean id="adminVideocountAction"
+		class="com.etc.myvideo.videocount.adminaction.AdminVideocountAction"
+		scope="prototype">
+		<property name="videocountservice" ref="videocountservice" />
+		<property name="videoinfoservice" ref="videoinfoservice"></property>
+	</bean>
+
+
+	<!-- 管理员对用户上传的视频进行操作 -->
+	<bean id="adminUseruploadManagerAction"
+		class="com.etc.myvideo.userupload.adminAction.AdminUserVideoinfoManagerAction"
+		scope="prototype">
+		<property name="useruploadinfoservice" ref="useruploadVideoInfoService"></property>
+	</bean>
+
+	<!-- 后台用户action -->
+	<bean id="adminUserAction" class="com.etc.myvideo.user.action.AdminUserAction" scope="prototype">
+		<property name="userService" ref="userService"/>
+	</bean>
+	
+	<!-- 管理员管理用户评论 -->
+	<bean id="commentManage" class="com.etc.myvideo.comment.action.adminAction.CommentAdminAction">
+	<property name="commentservice" ref="commentservice"></property>
+	</bean>
+	
+	<!-- Service的配置 =========================== -->
+
+	<!-- 图片切换service -->
+	<bean id="switchImageService" class="com.etc.myvideo.switchimage.service.SwitchImageService">
+		<property name="switchImageDao" ref="switchImageDao" />
+	</bean>
+	<!-- 视频信息 -->
+
+	<bean id="videoinfoservice" class="com.etc.myvideo.videoinfo.service.Videoinfoservice">
+		<property name="videoinfodao" ref="videoinfodao" />
+	</bean>
+
+	<!-- 视频点击信息 -->
+
+	<bean id="videocountservice" class="com.etc.myvideo.videocount.service.Videocountservice">
+		<property name="videocountdao" ref="videocountdao" />
+	</bean>
+
+
+	<!--评分表信息 -->
+
+	<bean id="gradeservice" class="com.etc.myvideo.grade.service.Gradeservice">
+		<property name="gradedao" ref="gradedao" />
+	</bean>
+
+	<!--评论表信息 -->
+	<bean id="commentservice" class="com.etc.myvideo.comment.service.Commentservice">
+		<property name="commentdao" ref="commentdao" />
+	</bean>
+	<!-- 用户service -->
+	<bean id="userService" class="com.etc.myvideo.user.service.UserService">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<bean id="adminService" class="com.etc.myvideo.admin.service.AdminService">
+		<property name="adminDao" ref="adminDao"></property>
+	</bean>
+
+
+	<!-- 广告service -->
+	<bean id="adservice" class="com.etc.myvideo.ad.service.Adservice">
+		<property name="addao" ref="addao"></property>
+	</bean>
+
+	<!-- 地区service -->
+	<bean id="areaservice" class="com.etc.myvideo.area.service.Areaservice">
+		<property name="areadao" ref="areadao"></property>
+	</bean>
+
+	<!-- 大类型service -->
+	<bean id="maxtypeservice" class="com.etc.myvideo.maxtype.service.Maxtypeservice">
+		<property name="maxtypedao" ref="maxtypedao"></property>
+	</bean>
+
+
+	<!-- 小类型service -->
+	<bean id="mintypeservice" class="com.etc.myvideo.mintype.service.Mintypeservice">
+		<property name="mintypedao" ref="mintypedao"></property>
+	</bean>
+
+	<!-- 用户上传的Service -->
+	<bean id="useruploadVideoInfoService"
+		class="com.etc.myvideo.userupload.service.Useruploadinfoservice">
+		<property name="userVideoInfoDao" ref="useruploadVideoInfoDao"></property>
+	</bean>
+
+	<!-- Dao的配置 =========================== -->
+	<!-- 视频操作 -->
+	<bean id="videoinfodao" class="com.etc.myvideo.videoinfo.dao.Videoinfodao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 图片切换 -->
+	<bean id="switchImageDao" class="com.etc.myvideo.switchimage.dao.SwitchImageDao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 视频级数 -->
+	<bean id="videocountdao" class="com.etc.myvideo.videocount.dao.Videocountdao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+
+	<!--评分表 -->
+	<bean id="gradedao" class="com.etc.myvideo.grade.dao.Gradedao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!--评论表 -->
+	<bean id="commentdao" class="com.etc.myvideo.comment.dao.Commentdao">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- 用户dao层 -->
+	<bean id="userDao" class="com.etc.myvideo.user.dao.UserDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+
+	</bean>
+
+
+	<bean id="adminDao" class="com.etc.myvideo.admin.dao.AdminDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+
+	<!-- 广告dao层 -->
+	<bean id="addao" class="com.etc.myvideo.ad.dao.Addao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+
+	</bean>
+
+	<!-- 地区dao层 -->
+	<bean id="areadao" class="com.etc.myvideo.area.dao.Areadao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+
+	</bean>
+	<!-- 大类型dao层 -->
+	<bean id="maxtypedao" class="com.etc.myvideo.maxtype.dao.Maxtypedao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+
+	</bean>
+	<!-- 小类型dao层 -->
+	<bean id="mintypedao" class="com.etc.myvideo.mintype.dao.Mintypedao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+
+	</bean>
+	<!-- 用户上传dao -->
+	<bean id="useruploadVideoInfoDao" class="com.etc.myvideo.userupload.dao.UseruploadInfoDao">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- 其他类的配置 =========================== -->
+
+</beans>
