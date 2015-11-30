@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.multipart.maxSize" value="104857600" />
+	<package name="MyVideo" extends="struts-default" namespace="/">
+
+		<!-- 配置首页访问的Action -->
+		<action name="index" class="indexAction">
+			<result name="index">/WEB-INF/jsp/mainindex.jsp</result>
+		</action>
+
+
+		<!-- 配置图片切换访问的Action -->
+		<action name="switchImage_*" class="switchImageAction" method="{1}">
+			<result name="findall">/WEB-INF/jsp/switchimage.jsp</result>
+		</action>
+
+		<!-- 视频信息的Action -->
+		<action name="videoinfo_*" class="videoinfoaction" method="{1}">
+			<result name="findByvidId">/WEB-INF/jsp/videoInfomessage.jsp</result>
+			<result name="bofangbyvidId">/WEB-INF/jsp/playvideo.jsp</result>
+			<result name="findbylikename">/WEB-INF/jsp/scan.jsp</result>
+			<result name="findbymaxtype">/WEB-INF/jsp/typescan.jsp</result>
+		</action>
+
+		<!-- 视频集数的Action -->
+		<action name="videocount_*" class="videocountaction" method="{1}">
+
+			<result name="findBycouid">/WEB-INF/jsp/jishuplayvideo.jsp</result>
+
+			<!-- result type设置为stream -->
+			<result name="download_success" type="stream">
+				<!-- MIME类型 -->
+				<param name="contentType">application/octet-stream</param>
+				<!-- inputName的值与action获取输入流资源的方法名相对应(action中定义getInputStream方法,并且返回类型为InputStream) -->
+				<param name="inputName">inputStream</param>
+				<!-- 设置带附件的文件 动态获取文件名(action中定义getDownloadFileName方法) -->
+				<param name="contentDisposition">attachment;filename="${downloadFileName}"</param>
+				<!-- 设置缓冲大小 -->
+				<param name="bufferSize">2048</param>
+			</result>
+
+		</action>
+
+
+
+		<!-- 聊天对话的Action -->
+		<action name="messages_*" class="messagesaction" method="{1}">
+		</action>
+		<!-- 弹幕的Action -->
+		<action name="danmu_*" class="danmuaction" method="{1}">
+		</action>
+
+		<!-- 评论的Action -->
+		<action name="comment_*" class="commentaction" method="{1}">
+		</action>
+
+		<!--用户使用的action -->
+		<action name="user_*" class="userAction" method="{1}">
+			<result name="register">/register.jsp</result>
+			<result name="active">/WEB-INF/jsp/msg.jsp</result>
+			<result name="login">/login.jsp</result>
+			<result name="fail">/login.jsp</result>
+			<result name="msg">/WEB-INF/jsp/msg.jsp</result>
+			<result name="tofindpass">/WEB-INF/jsp/tofindpass.jsp</result>
+			<result name="loginSuccess" type="redirectAction">index</result>
+			<result name="personInfo">/WEB-INF/jsp/personInfo.jsp</result>
+			<result name="quit" type="redirectAction">index</result>
+			<result name="tonewpass" type="redirectAction">user_tonewpass.action</result>
+			<result name="newpassword">/newpassword.jsp</result>
+		</action>
+
+		<!--用户上传视频的action -->
+		<action name="userupload_*" class="useruploadInfoAction"
+			method="{1}">
+			<result name="useruploadvideoinfo">/useraddvideoinfo.jsp</result>
+			<result name="saveSuccess">/WEB-INF/jsp/useruploadSuccess.jsp</result>
+			<result name="userVideoInfo">/uservideoifolist.jsp</result>
+			<result name="edituseruploadinfo">/editvideoinfo.jsp</result>
+			<result name="editSuccess" type="redirectAction">userupload_getUserVideoInfo
+			</result>
+			<result name="deleteSuccess" type="redirectAction">userupload_getUserVideoInfo
+			</result>
+			<result name="input">houtai/msgupload.jsp</result>
+			<interceptor-ref name="fileUpload">
+				<param name="allowedTypes">
+					image/bmp,image/png,image/gif,image/jpeg,image/jpg,image/x-png,video/mp4,
+					audio/mp4, application/mp4
+				</param>
+
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+
+		<!-- 管理员action -->
+		<action name="admin_*" class="adminAction" method="{1}">
+			<result name="fail">/WEB-INF/jsp/fail.jsp</result>
+			<result name="login">/WEB-INF/jsp/msg.jsp</result>
+			<result name="adminLogin" type="redirectAction">adminvideoinfo_findallvideo</result>
+			<result name="admininfo">/houtai/adminifolist.jsp</result>
+			<result name="toadmainframe">/admin/index.jsp</result>
+		</action>
+
+		<!--广告使用的action -->
+		<action name="ad_*" class="adaction" method="{1}">
+			<result name="adminfindallAd">houtai/ad/adifolist.jsp</result>
+			<result name="toaddview">houtai/ad/adad.jsp</result>
+			<result name="saveAd" type="redirectAction">ad_findallAd.action?page=1</result>
+			<result name="deleteAd" type="redirectAction">ad_findallAd.action?page=1
+			</result>
+			<result name="updateAd" type="redirectAction">ad_findallAd.action?page=1
+			</result>
+			<result name="editadSuccess">houtai/ad/editad.jsp</result>
+
+		</action>
+
+		<!-- 后台视频信息的Action -->
+		<action name="adminvideoinfo_*" class="adminVideoinfoAction"
+			method="{1}">
+			<result name="toaddview">houtai/addvideoinfo.jsp</result>
+			<result name="saveSuccess" type="redirectAction">adminvideoinfo_findallvideo
+			</result>
+			<result name="adminfindallvideo">houtai/videoifolist.jsp</result>
+			<result name="deleteSuccess" type="redirectAction">adminvideoinfo_findallvideo
+			</result>
+			<result name="editSuccess">houtai/editvideoinfo.jsp</result>
+			<result name="input">houtai/msgupload.jsp</result>
+			<interceptor-ref name="fileUpload">
+
+				<param name="allowedTypes">
+					image/bmp,image/png,image/gif,image/jpeg,image/jpg,image/x-png,video/mp4,
+					audio/mp4, application/mp4
+				</param>
+
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+
+
+		<!-- 后台视频级数的Action -->
+		<action name="adminvideocount_*" class="adminVideocountAction"
+			method="{1}">
+			<result name="toshowDetail">houtai/videocountDetail.jsp</result>
+			<result name="updateSuccess" type="redirectAction">adminvideoinfo_findallvideo.action?page=1
+			</result>
+			<result name="tosaveVideocount">houtai/addvideocount.jsp</result>
+			<result name="saveVideocount" type="redirectAction">adminvideoinfo_findallvideo.action?page=1
+			</result>
+			<result name="deletsuccess" type="redirectAction">adminvideoinfo_findallvideo.action?page=1
+			</result>
+			<result name="input">houtai/msgupload.jsp</result>
+			<interceptor-ref name="fileUpload">
+
+				<param name="allowedTypes">
+					video/mp4, audio/mp4, application/mp4
+				</param>
+
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+
+
+		<!-- 管理员对用户上传的视频进行审核和管理 -->
+
+		<action name="adminUserupload_*" class="adminUseruploadManagerAction"
+			method="{1}">
+			<result name="touseruploadlist" type="redirectAction">adminvideoinfo_findallvideo
+			</result>
+			<result name="getalluservideoinfo">admin/AdminUseruploadVideoInfo.jsp</result>
+			<result name="toedituseruploadlist">admin/Admineditvideoinfo.jsp</result>
+			<result name="updateSuccess" type="redirectAction">adminUserupload_getAllUserVideoInfo.action?page=1
+			</result>
+			<result name="editSuccess" type="redirectAction">adminUserupload_getAllUserVideoInfo.action?page=1
+			</result>
+			<result name="deleteSuccess" type="redirectAction">adminUserupload_getAllUserVideoInfo.action?page=1
+			</result>
+
+		</action>
+
+		<!-- 后台用户管理Action -->
+		<action name="adminUser_*" class="adminUserAction" method="{1}">
+			<result name="adminFindAllUser">houtai/userifolist.jsp</result>
+			<result name="userDetail">houtai/userdetail.jsp</result>
+		</action>
+
+		<!--管理员管理用户评论 -->
+		<action name="commentManage_*" class="commentManage" method="{1}">
+			<result name="commentmanage">houtai/commentAllList.jsp</result>
+			<result name="deletecomment" type="redirectAction">commentManage_findAllComment.action?page=1</result>
+		</action>
+
+
+
+	</package>
+</struts>

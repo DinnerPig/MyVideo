@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.etc.myvideo.videocount.entity.Videocount" table="videocount" >
+        <id name="couId" type="java.lang.Integer">
+            <column name="couId" />
+            <generator class="native" />
+        </id>
+        <many-to-one name="videoinfo" class="com.etc.myvideo.videoinfo.entity.Videoinfo" lazy="false" >
+            <column name="vidId" />
+        </many-to-one>
+        <property name="couCount" type="java.lang.Integer">
+            <column name="couCount" />
+        </property>
+      
+        <property name="couClick" type="java.lang.Integer">
+            <column name="couClick" />
+        </property>
+        <property name="couUrl" type="java.lang.String">
+            <column name="couURL" />
+        </property>
+        <property name="couDuration" type="java.lang.String">
+            <column name="couDuration" />
+        </property>
+        <property name="couUpload" >
+            <column name="couUpload" />
+        </property>
+        
+          <set name="comments" order-by="comId" lazy="false">
+            <key>
+                <column name="couId" />
+            </key>
+            <one-to-many class="com.etc.myvideo.comment.entity.Comment" />
+        </set>
+    </class>
+</hibernate-mapping>

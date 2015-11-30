@@ -1,0 +1,268 @@
+body {
+	text-align: center;
+	color: #414142;
+
+}
+.main {
+	clear:both;
+	width:1000px;
+	height:100%;
+	position:relative;
+	margin:0 auto;
+	
+}
+.top1 {
+	clear:both;
+	height:50px;
+	
+}
+.middle1 {
+	height:500px;
+	position:relative;
+	overflow:hidden;
+	z-index:90;
+	width:80%;
+	height:500px;
+	margin-top:0px;
+	background-color: black;	
+}
+.middle1 div {
+	height:40px;
+	line-height:40px;
+	font-size:20px;
+	position:absolute;
+	white-space:nowrap;
+}
+.play1 {
+	margin-top:5px;
+}
+.danmu {
+	text-align:left;
+	height:32px;
+	margin-top:5px;
+	
+}
+.main .danmu input {
+	width:260px;
+	height:25px;
+	font-size:18px;
+	font-family:"微软雅黑";
+	border:none;
+	margin-left:50px;
+}
+.main .danmu span {
+	width:80px;
+	height:25px;
+	display:inline-block;
+	background:blue;
+	line-height:25px;
+	text-align:center;
+	font-size:18px;
+	font-family:"微软雅黑";
+	color:white;
+	letter-spacing:2px;
+	cursor:pointer;
+}
+
+
+h1, em, #information {
+				display: block;
+				font-size: 25px;
+				font-weight: normal;
+				margin: 2em auto;
+			}
+
+			a {
+				color: #414142;
+				font-style: normal;
+				text-decoration: none;
+				font-size: 14px;
+			}
+					
+			a:hover {
+				text-decoration: underline;
+			}
+					
+			#container {
+				width:70%;
+				height:300px;
+				margin: 0 auto;
+				
+			}
+				
+			.wrapper {
+				display: inline-block;
+				width: 310px;
+				height: 100px;
+				vertical-align: top;
+				margin: 1em 1.5em 2em 0;
+				cursor: pointer;
+				position: relative;
+				font-family: Tahoma, Arial;
+				-webkit-perspective: 4000px;
+				-moz-perspective: 4000px;
+				-ms-perspective: 4000px;
+				-o-perspective: 4000px;
+				perspective: 4000px;
+			}
+
+			.item {
+				height: 100px;
+				-webkit-transform-style: preserve-3d;
+				-moz-transform-style: preserve-3d;
+				-ms-transform-style: preserve-3d;
+				-o-transform-style: preserve-3d;
+				transform-style: preserve-3d;
+				/*任务三、给每个列表项添加过渡动画效果*/
+
+				-webkit-transition: -webkit-transform .6s;
+				-moz-transition: -moz-transform .6s;
+				-ms-transition: -ms-transform .6s;
+				-o-transition: -o-transform .6s;
+				transition: transform .6s;
+			}
+
+			.item:hover {
+				/*任务四、悬浮状态改变每个列表项的transform效果*/
+
+				-webkit-transform: translateZ(-50px) rotateX(95deg);
+				-moz-transform: translateZ(-50px) rotateX(95deg);
+				-ms-transform: translateZ(-50px) rotateX(95deg);
+				-o-transform: translateZ(-50px) rotateX(95deg);
+				transform: translateZ(-50px) rotateX(95deg);
+			}
+
+			.itemimg {
+				display: block;
+				position: absolute;
+				top: 0;
+				/*任务五、设置列表项图片的圆角和阴影效果*/
+				border-radius: 3px;
+				box-shadow: 0px 3px 8px rgba(0,0,0,0.3);
+
+			   -webkit-transform: translateZ(50px);
+			   -moz-transform: translateZ(50px);
+			   -ms-transform: translateZ(50px);
+			   -o-transform: translateZ(50px);
+				transform: translateZ(50px);
+			   -webkit-transition: all .6s;
+			   -moz-transition: all .6s;
+			   -ms-transition: all .6s;
+			   -o-transition: all .6s;
+				transition: all .6s;
+				width: 310px; 
+				height: 100px;
+			 }
+
+			.item .information {
+				display: block;
+				position: absolute;
+				top: 0;
+				height: 80px;
+				width: 290px;
+				text-align: left;
+				border-radius: 15px;
+				padding: 10px;
+				font-size: 12px;
+				text-shadow: 1px 1px1pxrgba(255,255,255,0.5);
+				box-shadow: none;
+				background: rgb(236,241,244);
+				/*任务六、给底层显示文本的层级设置渐变效果*/
+
+				background: -webkit-linear-gradient(to bottom,  rgba(236,241,244,1) 0%,rgba(190,202,217,1) 100%);
+				background: -ms-linear-gradient(to bottom,  rgba(236,241,244,1) 0%,rgba(190,202,217,1) 100%);
+				background: linear-gradient(to bottom,  rgba(236,241,244,1) 0%,rgba(190,202,217,1) 100%);
+
+				-webkit-transform: rotateX(-90deg) translateZ(50px);
+				-moz-transform: rotateX(-90deg) translateZ(50px);
+				-ms-transform: rotateX(-90deg) translateZ(50px);
+				-o-transform: rotateX(-90deg) translateZ(50px);
+				transform: rotateX(-90deg) translateZ(50px);
+				-webkit-transition: all .6s;
+				-moz-transition: all .6s;
+				-ms-transition: all .6s;
+				-o-transition: all .6s;
+				transition: all .6s;
+			 }
+
+			.information strong {
+				display: block;
+				margin: .2em 0 .5em 0;
+				font-size: 20px;
+				font-family: "Oleo Script";
+			  }
+			.item:hoverimg {
+				/*任务七、列表项悬浮状态时，去掉图片的阴影效果*/
+
+				box-shadow: none;
+				border-radius: 15px;
+			}
+
+			.item:hover .information {
+				box-shadow: 0px 3px 8px rgba(0,0,0,0.3);
+				border-radius: 3px;
+			 }
+.lianjie{
+	height:320px;
+	
+	margin-top:5px	
+}
+
+.comment{
+	width:100%;
+	height:130px;
+	
+	margin-top:5px;
+}
+
+.commentcontent{
+	width:100%;
+	margin-top:15px;
+}
+
+.commentinfo{
+	text-align:left;
+	height:auto;
+	margin-top:10px;
+}
+
+.bottom1{
+	margin-top:5px;
+	text-align:left;	
+}
+
+#jSuggestContainer {
+position:absolute;
+font: 12px Tahoma;
+border:1px solid #ffb931;
+border-top:0;
+background:#FFF;
+}
+
+.jSuggestLoading {
+font-style:italic;
+padding: 10px;
+}
+
+#jSuggestContainer ul, #jSuggestContainer ul li{
+margin: 0;
+padding:0;
+list-style:none;
+}
+
+#jSuggestContainer ul li{
+padding: 2px 4px;
+border-bottom: 1px dotted #ffe594;
+color:#666;
+background:#fff9e7;
+cursor:pointer
+}
+
+#jSuggestContainer ul li.last{
+border-bottom: 0;
+}
+
+#jSuggestContainer ul li.jSuggestHover{
+background:#ffeaaa;
+color:#333;
+}

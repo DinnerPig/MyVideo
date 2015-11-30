@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.etc.myvideo.area.entity.Area" table="area" >
+        <id name="areaId" type="java.lang.Integer">
+            <column name="areaId" />
+            <generator class="native" />
+        </id>
+        <property name="areaName" type="java.lang.String">
+            <column name="areaName" not-null="true" />
+        </property>
+        <set name="videoinfos">
+            <key>
+                <column name="vidArea" />
+            </key>
+            <one-to-many class="com.etc.myvideo.videoinfo.entity.Videoinfo" />
+        </set>
+    </class>
+</hibernate-mapping>

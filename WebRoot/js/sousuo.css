@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	background:url("2.jpg");
+	text-align: center;
+	color: #414142;
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+}
+
+.main {
+	clear:both;
+	width:100%;
+	height:100%;
+	position:relative;
+	margin:0 auto;
+	
+}
+
+.top{
+	margin-top:0px;
+	clear:both;
+	height:40px;
+}
+
+.sousuo{
+	margin:1px;
+	margin-top:1px;
+	margin-left:5%;
+	margin-right:5%;	
+}
+
+.info{
+	margin-top:1px;
+}
+
+.con{
+	height:auto!important;
+	min-height:650px;
+	margin-top:1px;
+}
+
+.page{
+	height:50px;	
+}
+
+.bottom2{
+	height:80px;
+	margin-top:5px;
+	text-align:left;	
+}
+
+.main .m_1 {
+	width:50%;
+	height:40px;
+}
+.main .m_1 .s_send {
+	width:600px;
+	height:40px;
+
+}
+.main .m_1 .s_send input {
+	width:400px;
+	height:40px;
+	font-size:18px;
+	font-family:"寰蒋闆呴粦";
+	float:left;
+}
+.main .m_1 .s_send span {
+	width:100px;
+	display:inline-block;
+	background:blue;
+	line-height:40px;
+	text-align:center;
+	font-size:18px;
+	font-family:"寰蒋闆呴粦";
+	color:white;
+	letter-spacing:2px;
+	float:left;
+	cursor:pointer;
+}
